@@ -5,3 +5,14 @@ CCA_TEST_SUITE.md
 TEST_README.md
 TEST_CCA.py
 .gitignore
+__py
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
+*.pywz
+*.pyzw
+*.pyzwz
+*.pyzwzw
