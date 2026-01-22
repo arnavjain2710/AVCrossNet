@@ -4,3 +4,4 @@ CCA_FIXES_SUMMARY.md
 CCA_TEST_SUITE.md
 TEST_README.md
 TEST_CCA.py
+.gitignore
