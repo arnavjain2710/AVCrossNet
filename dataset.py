@@ -172,17 +172,17 @@ class AVSEDataset(Dataset):
 class AVSEDataModule(LightningDataModule):
     def __init__(self, batch_size=16):
         super(AVSEDataModule, self).__init__()
-        # print("train: ", join(DATA_ROOT, "train\\scenes"))
-        # print("val: ", join(DATA_ROOT, "dev\\scenes"))
-        # self.train_dataset_batch = AVSEDataset(join(DATA_ROOT, "train/scenes"))
-        # self.dev_dataset_batch = AVSEDataset(join(DATA_ROOT, "dev/scenes"))
+        print("train: ", join(DATA_ROOT, "train\\scenes"))
+        print("val: ", join(DATA_ROOT, "dev\\scenes"))
+        self.train_dataset_batch = AVSEDataset(join(DATA_ROOT, "train/scenes"))
+        self.dev_dataset_batch = AVSEDataset(join(DATA_ROOT, "dev/scenes"))
         # self.dev_dataset = AVSEDataset(join(DATA_ROOT, "dev/scenes"), clipped_batch=False, sample_items=False)
         # self.eval_dataset = AVSEDataset(join(DATA_ROOT, "eval\\scenes"), clipped_batch=False, sample_items=False,
         #                                 test_set=True)
         
         #correct eval_dataset
-        self.eval_dataset = AVSEDataset("D:\Rupal\AVSE\Extended_Work\Challenge_test_data\AVSE_EvalSet\scenes", clipped_batch=False, sample_items=False,
-                                        test_set=True)
+        # self.eval_dataset = AVSEDataset("D:\Rupal\AVSE\Extended_Work\Challenge_test_data\AVSE_EvalSet\scenes", clipped_batch=False, sample_items=False,
+                                        # test_set=True)
         
         self.batch_size = batch_size
 

@@ -140,4 +140,4 @@ if __name__ == "__main__":
     print(f"Total scenes processed: {len(merged_df)}")
     print(f"Overall mean STOI: {merged_df['stoi'].mean():.4f}")
     print(f"Overall mean PESQ: {merged_df['pesq'].mean():.4f}")
-    print(f"Overall mean SISDR: {merged_df['sisdr'].mean():.4f}")*
+    print(f"Overall mean SISDR: {merged_df['sisdr'].mean():.4f}")
