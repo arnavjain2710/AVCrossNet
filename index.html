@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AVCrossNet — Audio Demo</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #20243a;
+      --border: #2a2f4a;
+      --accent: #6c8ef7;
+      --accent2: #a78bfa;
+      --green: #34d399;
+      --amber: #f59e0b;
+      --pink: #e879f9;
+      --text: #e2e8f0;
+      --muted: #64748b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      padding: 3.5rem 1rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      background: radial-gradient(ellipse 70% 50% at 50% -10%, rgba(108,142,247,0.10) 0%, transparent 70%);
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #e2e8f0 40%, var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.4rem;
+    }
+
+    .tagline {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 1.8rem;
+    }
+
+    .btns {
+      display: flex;
+      gap: 0.7rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btns a {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .btns a:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .btn-code   { background: #24292e; color: #fff; border: 1px solid #444; }
+    .btn-paper  { background: #b91c1c; color: #fff; }
+    .btn-board  { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+
+    /* ── Main ── */
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3rem 1rem 5rem;
+    }
+
+    /* ── Example card ── */
+    .example {
+      margin-bottom: 2.5rem;
+    }
+
+    .example-head {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .snr-badge {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.25rem 0.7rem;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+    }
+    .snr-neg  { background: rgba(239,68,68,0.15);  color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
+    .snr-zero { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); }
+    .snr-pos  { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
+
+    .example-label { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── Row per model ── */
+    .row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      align-items: center;
+      gap: 0.6rem 0.9rem;
+      padding: 0.5rem 0.8rem;
+      border-radius: 8px;
+      margin-bottom: 0.4rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    @media (max-width: 500px) {
+      .row { grid-template-columns: 1fr; }
+    }
+
+    .model-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .m-noisy  { color: var(--amber); }
+    .m-lstm   { color: #94a3b8; }
+    .m-avdiff { color: var(--pink); }
+    .m-avgen  { color: #c084fc; }
+    .m-ours   { color: var(--accent); }
+    .m-clean  { color: var(--green); }
+
+    .row-ours {
+      background: rgba(108,142,247,0.06);
+      border-color: rgba(108,142,247,0.25);
+    }
+    .row-clean {
+      background: rgba(52,211,153,0.05);
+      border-color: rgba(52,211,153,0.2);
+    }
+
+    audio {
+      width: 100%;
+      height: 32px;
+      accent-color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>AVCrossNet</h1>
+  <p class="tagline">Audio-Visual Speech Enhancement · Demo Samples</p>
+  <div class="btns">
+    <a class="btn-code" href="https://github.com/arnavjain2710/AVCrossNet" target="_blank">
+      <svg width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+      </svg>
+      Code
+    </a>
+  </div>
+</header>
+
+<main>
+
+  <!-- Example: 21_S50707_SNR-6dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-neg">SNR −6 dB</span>
+      <span class="example-label">Scene 21 · Speaker S50707</span>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/21_S50707_SNR-6dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/21_S50707_SNR-6dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/21_S50707_SNR-6dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/21_S50707_SNR-6dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/21_S50707_SNR-6dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/21_S50707_SNR-6dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 32_S51777_SNR-5dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-neg">SNR −5 dB</span>
+      <span class="example-label">Scene 32 · Speaker S51777</span>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/32_S51777_SNR-5dB_n/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/32_S51777_SNR-5dB_n/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/32_S51777_SNR-5dB_n/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/32_S51777_SNR-5dB_n/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/32_S51777_SNR-5dB_n/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/32_S51777_SNR-5dB_n/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 49_S51352_SNR-1dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-neg">SNR −1 dB</span>
+      <span class="example-label">Scene 49 · Speaker S51352</span>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/49_S51352_SNR-1dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/49_S51352_SNR-1dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/49_S51352_SNR-1dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/49_S51352_SNR-1dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/49_S51352_SNR-1dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/49_S51352_SNR-1dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 56_S51116_SNR-0dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-zero">SNR 0 dB</span>
+      <span class="example-label">Scene 56 · Speaker S51116</span>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/56_S51116_SNR-0dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/56_S51116_SNR-0dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/56_S51116_SNR-0dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/56_S51116_SNR-0dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/56_S51116_SNR-0dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/56_S51116_SNR-0dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 57_S51336_SNR-0dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-zero">SNR 0 dB</span>
+      <span class="example-label">Scene 57 · Speaker S51336</span>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/57_S51336_SNR-0dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/57_S51336_SNR-0dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/57_S51336_SNR-0dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/57_S51336_SNR-0dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/57_S51336_SNR-0dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/57_S51336_SNR-0dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 59_S51161_SNR+1dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-pos">SNR +1 dB</span>
+      <span class="example-label">Scene 59 · Speaker S51161</span>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/59_S51161_SNR+1dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/59_S51161_SNR+1dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/59_S51161_SNR+1dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/59_S51161_SNR+1dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/59_S51161_SNR+1dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/59_S51161_SNR+1dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 66_S51822_SNR+2dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-pos">SNR +2 dB</span>
+      <span class="example-label">Scene 66 · Speaker S51822</span>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/66_S51822_SNR+2dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/66_S51822_SNR+2dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/66_S51822_SNR+2dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/66_S51822_SNR+2dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/66_S51822_SNR+2dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/66_S51822_SNR+2dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 72_S51091_SNR+4dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-pos">SNR +4 dB</span>
+      <span class="example-label">Scene 72 · Speaker S51091</span>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/72_S51091_SNR+4dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/72_S51091_SNR+4dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/72_S51091_SNR+4dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/72_S51091_SNR+4dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/72_S51091_SNR+4dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/72_S51091_SNR+4dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 81_S50979_SNR+8dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-pos">SNR +8 dB</span>
+      <span class="example-label">Scene 81 · Speaker S50979</span>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/81_S50979_SNR+8dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/81_S50979_SNR+8dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/81_S50979_SNR+8dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/81_S50979_SNR+8dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/81_S50979_SNR+8dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/81_S50979_SNR+8dB/0_clean.wav"></audio></div>
+  </div>
+
+</main>
+
+</body>
+</html>
