@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git reset *)",
+      "Bash(GIT_AUTHOR_NAME=\"arnavjain2710\" GIT_AUTHOR_EMAIL=\"arnavjain2710@users.noreply.github.com\" GIT_COMMITTER_NAME=\"arnavjain2710\" GIT_COMMITTER_EMAIL=\"arnavjain2710@users.noreply.github.com\" git commit -m \"Added webpage demo\")"
+    ]
+  }
+}

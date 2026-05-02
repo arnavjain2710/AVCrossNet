@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AVCrossNet — Audio Demo</title>
+  <title>AVCrossNet — Audio-Visual Demo</title>
   <style>
     :root {
       --bg: #0f1117;
@@ -70,26 +70,50 @@
     .btns a:hover { opacity: 0.85; transform: translateY(-1px); }
 
     .btn-code   { background: #24292e; color: #fff; border: 1px solid #444; }
-    .btn-paper  { background: #b91c1c; color: #fff; }
-    .btn-board  { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .btn-ref    { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
 
     /* ── Main ── */
     main {
-      max-width: 960px;
+      max-width: 1000px;
       margin: 0 auto;
       padding: 3rem 1rem 5rem;
     }
 
+    /* ── Section headings ── */
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Abstract / Description ── */
+    .abstract {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.6rem 1.8rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .abstract p {
+      font-size: 0.93rem;
+      line-height: 1.75;
+      color: #cbd5e1;
+    }
+
     /* ── Example card ── */
     .example {
-      margin-bottom: 2.5rem;
+      margin-bottom: 2.8rem;
     }
 
     .example-head {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.9rem;
       padding-bottom: 0.6rem;
       border-bottom: 1px solid var(--border);
     }
@@ -107,10 +131,55 @@
 
     .example-label { font-size: 0.85rem; color: var(--muted); }
 
+    /* ── Video section ── */
+    .video-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .video-card video {
+      width: 220px;
+      min-width: 180px;
+      border-radius: 6px;
+      background: #000;
+    }
+
+    .video-meta {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.35rem;
+    }
+
+    .video-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent2);
+    }
+
+    .video-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 540px) {
+      .video-card { flex-direction: column; }
+      .video-card video { width: 100%; }
+    }
+
     /* ── Row per model ── */
     .row {
       display: grid;
-      grid-template-columns: 140px 1fr;
+      grid-template-columns: 150px 1fr;
       align-items: center;
       gap: 0.6rem 0.9rem;
       padding: 0.5rem 0.8rem;
@@ -149,6 +218,47 @@
       height: 32px;
       accent-color: var(--accent);
     }
+
+    /* ── References ── */
+    .references {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.6rem 1.8rem;
+      margin-top: 3rem;
+    }
+
+    .references ol {
+      padding-left: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .references li {
+      font-size: 0.875rem;
+      line-height: 1.65;
+      color: #cbd5e1;
+    }
+
+    .references li strong {
+      color: var(--text);
+    }
+
+    .references a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .references a:hover { text-decoration: underline; }
+
+    .ref-ours {
+      background: rgba(108,142,247,0.06);
+      border: 1px solid rgba(108,142,247,0.2);
+      border-radius: 8px;
+      padding: 0.7rem 0.9rem;
+      list-style: none;
+      margin-left: -1.4rem;
+    }
   </style>
 </head>
 <body>
@@ -163,135 +273,448 @@
       </svg>
       Code
     </a>
+    <a class="btn-ref" href="#references">References</a>
   </div>
 </header>
 
 <main>
 
-  <!-- Example: 21_S50707_SNR-6dB -->
-  <div class="example">
-    <div class="example-head">
-      <span class="snr-badge snr-neg">SNR −6 dB</span>
-      <span class="example-label">Scene 21 · Speaker S50707</span>
-    </div>
-    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/21_S50707_SNR-6dB/1_noisy.wav"></audio></div>
-    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/21_S50707_SNR-6dB/2_lstmse.wav"></audio></div>
-    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/21_S50707_SNR-6dB/3_avdiffuss.wav"></audio></div>
-    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/21_S50707_SNR-6dB/4_avgen.wav"></audio></div>
-    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/21_S50707_SNR-6dB/5_avcrossnet.wav"></audio></div>
-    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/21_S50707_SNR-6dB/0_clean.wav"></audio></div>
+  <!-- ── Description ── -->
+  <div class="abstract">
+    <div class="section-title">About AVCrossNet</div>
+    <p>
+      <strong>AVCrossNet</strong> is an audio-visual speech enhancement (AVSE) network that leverages cross-modal
+      attention between audio and lip-movement visual streams to improve speech quality and intelligibility in
+      challenging noise conditions. Unlike audio-only approaches, AVCrossNet fuses complementary information from
+      the speaker's lip movements with the noisy audio signal, enabling more robust enhancement—particularly at
+      very low signal-to-noise ratios (SNR). The model is evaluated on the
+      <strong>AVSEC-3 benchmark</strong> and compared against competitive audio-only and audio-visual baselines
+      across a wide range of SNR conditions (−10 dB to +6 dB).
+    </p>
+    <p style="margin-top: 0.75rem;">
+      Each example below shows the <strong>silent lip-movement video</strong> (visual input to the model)
+      alongside audio outputs from all compared systems. Listen across conditions to hear how AVCrossNet
+      preserves speech clarity where baselines struggle.
+    </p>
   </div>
 
-  <!-- Example: 32_S51777_SNR-5dB -->
+  <!-- ════════════════════════════════════════════════ -->
+  <!-- Example: 01_S52095_SNR-10dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-neg">SNR −10 dB</span>
+      <span class="example-label">Scene 01 · Speaker S52095</span>
+    </div>
+    <div class="video-card">
+      <video controls muted loop src="finals/01_S52095_SNR-10dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/01_S52095_SNR-10dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/01_S52095_SNR-10dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/01_S52095_SNR-10dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/01_S52095_SNR-10dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/01_S52095_SNR-10dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/01_S52095_SNR-10dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 02_S51207_SNR-10dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-neg">SNR −10 dB</span>
+      <span class="example-label">Scene 02 · Speaker S51207</span>
+    </div>
+    <div class="video-card">
+      <video controls muted loop src="finals/02_S51207_SNR-10dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/02_S51207_SNR-10dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/02_S51207_SNR-10dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/02_S51207_SNR-10dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/02_S51207_SNR-10dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/02_S51207_SNR-10dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/02_S51207_SNR-10dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 03_S52112_SNR-5dB -->
   <div class="example">
     <div class="example-head">
       <span class="snr-badge snr-neg">SNR −5 dB</span>
-      <span class="example-label">Scene 32 · Speaker S51777</span>
+      <span class="example-label">Scene 03 · Speaker S52112</span>
     </div>
-    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/32_S51777_SNR-5dB_n/1_noisy.wav"></audio></div>
-    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/32_S51777_SNR-5dB_n/2_lstmse.wav"></audio></div>
-    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/32_S51777_SNR-5dB_n/3_avdiffuss.wav"></audio></div>
-    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/32_S51777_SNR-5dB_n/4_avgen.wav"></audio></div>
-    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/32_S51777_SNR-5dB_n/5_avcrossnet.wav"></audio></div>
-    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/32_S51777_SNR-5dB_n/0_clean.wav"></audio></div>
+    <div class="video-card">
+      <video controls muted loop src="finals/03_S52112_SNR-5dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/03_S52112_SNR-5dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/03_S52112_SNR-5dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/03_S52112_SNR-5dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/03_S52112_SNR-5dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/03_S52112_SNR-5dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/03_S52112_SNR-5dB/0_clean.wav"></audio></div>
   </div>
 
-  <!-- Example: 49_S51352_SNR-1dB -->
+  <!-- Example: 04_S51790_SNR-5dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-neg">SNR −5 dB</span>
+      <span class="example-label">Scene 04 · Speaker S51790</span>
+    </div>
+    <div class="video-card">
+      <video controls muted loop src="finals/04_S51790_SNR-5dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/04_S51790_SNR-5dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/04_S51790_SNR-5dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/04_S51790_SNR-5dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/04_S51790_SNR-5dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/04_S51790_SNR-5dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/04_S51790_SNR-5dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 05_S51709_SNR-1dB -->
   <div class="example">
     <div class="example-head">
       <span class="snr-badge snr-neg">SNR −1 dB</span>
-      <span class="example-label">Scene 49 · Speaker S51352</span>
+      <span class="example-label">Scene 05 · Speaker S51709</span>
     </div>
-    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/49_S51352_SNR-1dB/1_noisy.wav"></audio></div>
-    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/49_S51352_SNR-1dB/2_lstmse.wav"></audio></div>
-    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/49_S51352_SNR-1dB/3_avdiffuss.wav"></audio></div>
-    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/49_S51352_SNR-1dB/4_avgen.wav"></audio></div>
-    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/49_S51352_SNR-1dB/5_avcrossnet.wav"></audio></div>
-    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/49_S51352_SNR-1dB/0_clean.wav"></audio></div>
+    <div class="video-card">
+      <video controls muted loop src="finals/05_S51709_SNR-1dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/05_S51709_SNR-1dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/05_S51709_SNR-1dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/05_S51709_SNR-1dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/05_S51709_SNR-1dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/05_S51709_SNR-1dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/05_S51709_SNR-1dB/0_clean.wav"></audio></div>
   </div>
 
-  <!-- Example: 56_S51116_SNR-0dB -->
+  <!-- Example: 06_S52397_SNR-1dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-neg">SNR −1 dB</span>
+      <span class="example-label">Scene 06 · Speaker S52397</span>
+    </div>
+    <div class="video-card">
+      <video controls muted loop src="finals/06_S52397_SNR-1dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/06_S52397_SNR-1dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/06_S52397_SNR-1dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/06_S52397_SNR-1dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/06_S52397_SNR-1dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/06_S52397_SNR-1dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/06_S52397_SNR-1dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 07_S51767_SNR-1dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-neg">SNR −1 dB</span>
+      <span class="example-label">Scene 07 · Speaker S51767</span>
+    </div>
+    <div class="video-card">
+      <video controls muted loop src="finals/07_S51767_SNR-1dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/07_S51767_SNR-1dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/07_S51767_SNR-1dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/07_S51767_SNR-1dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/07_S51767_SNR-1dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/07_S51767_SNR-1dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/07_S51767_SNR-1dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 08_S51753_SNR-1dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-neg">SNR −1 dB</span>
+      <span class="example-label">Scene 08 · Speaker S51753</span>
+    </div>
+    <div class="video-card">
+      <video controls muted loop src="finals/08_S51753_SNR-1dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/08_S51753_SNR-1dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/08_S51753_SNR-1dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/08_S51753_SNR-1dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/08_S51753_SNR-1dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/08_S51753_SNR-1dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/08_S51753_SNR-1dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 09_S51455_SNR-0dB -->
   <div class="example">
     <div class="example-head">
       <span class="snr-badge snr-zero">SNR 0 dB</span>
-      <span class="example-label">Scene 56 · Speaker S51116</span>
+      <span class="example-label">Scene 09 · Speaker S51455</span>
     </div>
-    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/56_S51116_SNR-0dB/1_noisy.wav"></audio></div>
-    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/56_S51116_SNR-0dB/2_lstmse.wav"></audio></div>
-    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/56_S51116_SNR-0dB/3_avdiffuss.wav"></audio></div>
-    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/56_S51116_SNR-0dB/4_avgen.wav"></audio></div>
-    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/56_S51116_SNR-0dB/5_avcrossnet.wav"></audio></div>
-    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/56_S51116_SNR-0dB/0_clean.wav"></audio></div>
+    <div class="video-card">
+      <video controls muted loop src="finals/09_S51455_SNR-0dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/09_S51455_SNR-0dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/09_S51455_SNR-0dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/09_S51455_SNR-0dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/09_S51455_SNR-0dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/09_S51455_SNR-0dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/09_S51455_SNR-0dB/0_clean.wav"></audio></div>
   </div>
 
-  <!-- Example: 57_S51336_SNR-0dB -->
+  <!-- Example: 10_S51116_SNR-0dB -->
   <div class="example">
     <div class="example-head">
       <span class="snr-badge snr-zero">SNR 0 dB</span>
-      <span class="example-label">Scene 57 · Speaker S51336</span>
+      <span class="example-label">Scene 10 · Speaker S51116</span>
     </div>
-    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/57_S51336_SNR-0dB/1_noisy.wav"></audio></div>
-    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/57_S51336_SNR-0dB/2_lstmse.wav"></audio></div>
-    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/57_S51336_SNR-0dB/3_avdiffuss.wav"></audio></div>
-    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/57_S51336_SNR-0dB/4_avgen.wav"></audio></div>
-    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/57_S51336_SNR-0dB/5_avcrossnet.wav"></audio></div>
-    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/57_S51336_SNR-0dB/0_clean.wav"></audio></div>
+    <div class="video-card">
+      <video controls muted loop src="finals/10_S51116_SNR-0dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/10_S51116_SNR-0dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/10_S51116_SNR-0dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/10_S51116_SNR-0dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/10_S51116_SNR-0dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/10_S51116_SNR-0dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/10_S51116_SNR-0dB/0_clean.wav"></audio></div>
   </div>
 
-  <!-- Example: 59_S51161_SNR+1dB -->
+  <!-- Example: 11_S51336_SNR-0dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-zero">SNR 0 dB</span>
+      <span class="example-label">Scene 11 · Speaker S51336</span>
+    </div>
+    <div class="video-card">
+      <video controls muted loop src="finals/11_S51336_SNR-0dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/11_S51336_SNR-0dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/11_S51336_SNR-0dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/11_S51336_SNR-0dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/11_S51336_SNR-0dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/11_S51336_SNR-0dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/11_S51336_SNR-0dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 12_S51117_SNR+0dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-zero">SNR 0 dB</span>
+      <span class="example-label">Scene 12 · Speaker S51117</span>
+    </div>
+    <div class="video-card">
+      <video controls muted loop src="finals/12_S51117_SNR+0dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/12_S51117_SNR+0dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/12_S51117_SNR+0dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/12_S51117_SNR+0dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/12_S51117_SNR+0dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/12_S51117_SNR+0dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/12_S51117_SNR+0dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 13_S51530_SNR+0dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-zero">SNR 0 dB</span>
+      <span class="example-label">Scene 13 · Speaker S51530</span>
+    </div>
+    <div class="video-card">
+      <video controls muted loop src="finals/13_S51530_SNR+0dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/13_S51530_SNR+0dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/13_S51530_SNR+0dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/13_S51530_SNR+0dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/13_S51530_SNR+0dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/13_S51530_SNR+0dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/13_S51530_SNR+0dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 14_S51161_SNR+1dB -->
   <div class="example">
     <div class="example-head">
       <span class="snr-badge snr-pos">SNR +1 dB</span>
-      <span class="example-label">Scene 59 · Speaker S51161</span>
+      <span class="example-label">Scene 14 · Speaker S51161</span>
     </div>
-    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/59_S51161_SNR+1dB/1_noisy.wav"></audio></div>
-    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/59_S51161_SNR+1dB/2_lstmse.wav"></audio></div>
-    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/59_S51161_SNR+1dB/3_avdiffuss.wav"></audio></div>
-    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/59_S51161_SNR+1dB/4_avgen.wav"></audio></div>
-    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/59_S51161_SNR+1dB/5_avcrossnet.wav"></audio></div>
-    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/59_S51161_SNR+1dB/0_clean.wav"></audio></div>
+    <div class="video-card">
+      <video controls muted loop src="finals/14_S51161_SNR+1dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/14_S51161_SNR+1dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/14_S51161_SNR+1dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/14_S51161_SNR+1dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/14_S51161_SNR+1dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/14_S51161_SNR+1dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/14_S51161_SNR+1dB/0_clean.wav"></audio></div>
   </div>
 
-  <!-- Example: 66_S51822_SNR+2dB -->
+  <!-- Example: 15_S50440_SNR+1dB -->
   <div class="example">
     <div class="example-head">
-      <span class="snr-badge snr-pos">SNR +2 dB</span>
-      <span class="example-label">Scene 66 · Speaker S51822</span>
+      <span class="snr-badge snr-pos">SNR +1 dB</span>
+      <span class="example-label">Scene 15 · Speaker S50440</span>
     </div>
-    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/66_S51822_SNR+2dB/1_noisy.wav"></audio></div>
-    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/66_S51822_SNR+2dB/2_lstmse.wav"></audio></div>
-    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/66_S51822_SNR+2dB/3_avdiffuss.wav"></audio></div>
-    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/66_S51822_SNR+2dB/4_avgen.wav"></audio></div>
-    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/66_S51822_SNR+2dB/5_avcrossnet.wav"></audio></div>
-    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/66_S51822_SNR+2dB/0_clean.wav"></audio></div>
+    <div class="video-card">
+      <video controls muted loop src="finals/15_S50440_SNR+1dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/15_S50440_SNR+1dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/15_S50440_SNR+1dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/15_S50440_SNR+1dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/15_S50440_SNR+1dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/15_S50440_SNR+1dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/15_S50440_SNR+1dB/0_clean.wav"></audio></div>
   </div>
 
-  <!-- Example: 72_S51091_SNR+4dB -->
+  <!-- Example: 16_S51014_SNR+1dB -->
   <div class="example">
     <div class="example-head">
-      <span class="snr-badge snr-pos">SNR +4 dB</span>
-      <span class="example-label">Scene 72 · Speaker S51091</span>
+      <span class="snr-badge snr-pos">SNR +1 dB</span>
+      <span class="example-label">Scene 16 · Speaker S51014</span>
     </div>
-    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/72_S51091_SNR+4dB/1_noisy.wav"></audio></div>
-    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/72_S51091_SNR+4dB/2_lstmse.wav"></audio></div>
-    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/72_S51091_SNR+4dB/3_avdiffuss.wav"></audio></div>
-    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/72_S51091_SNR+4dB/4_avgen.wav"></audio></div>
-    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/72_S51091_SNR+4dB/5_avcrossnet.wav"></audio></div>
-    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/72_S51091_SNR+4dB/0_clean.wav"></audio></div>
+    <div class="video-card">
+      <video controls muted loop src="finals/16_S51014_SNR+1dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/16_S51014_SNR+1dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/16_S51014_SNR+1dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/16_S51014_SNR+1dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/16_S51014_SNR+1dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/16_S51014_SNR+1dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/16_S51014_SNR+1dB/0_clean.wav"></audio></div>
   </div>
 
-  <!-- Example: 81_S50979_SNR+8dB -->
+  <!-- Example: 17_S50651_SNR+6dB -->
   <div class="example">
     <div class="example-head">
-      <span class="snr-badge snr-pos">SNR +8 dB</span>
-      <span class="example-label">Scene 81 · Speaker S50979</span>
+      <span class="snr-badge snr-pos">SNR +6 dB</span>
+      <span class="example-label">Scene 17 · Speaker S50651</span>
     </div>
-    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/81_S50979_SNR+8dB/1_noisy.wav"></audio></div>
-    <div class="row"><span class="model-name m-lstm">LSTM-SE</span><audio controls src="finals/81_S50979_SNR+8dB/2_lstmse.wav"></audio></div>
-    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/81_S50979_SNR+8dB/3_avdiffuss.wav"></audio></div>
-    <div class="row"><span class="model-name m-avgen">AVGEN</span><audio controls src="finals/81_S50979_SNR+8dB/4_avgen.wav"></audio></div>
-    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/81_S50979_SNR+8dB/5_avcrossnet.wav"></audio></div>
-    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/81_S50979_SNR+8dB/0_clean.wav"></audio></div>
+    <div class="video-card">
+      <video controls muted loop src="finals/17_S50651_SNR+6dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/17_S50651_SNR+6dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/17_S50651_SNR+6dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/17_S50651_SNR+6dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/17_S50651_SNR+6dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/17_S50651_SNR+6dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/17_S50651_SNR+6dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- Example: 18_S51375_SNR+6dB -->
+  <div class="example">
+    <div class="example-head">
+      <span class="snr-badge snr-pos">SNR +6 dB</span>
+      <span class="example-label">Scene 18 · Speaker S51375</span>
+    </div>
+    <div class="video-card">
+      <video controls muted loop src="finals/18_S51375_SNR+6dB/video_silent.mp4"></video>
+      <div class="video-meta">
+        <span class="video-tag">Visual Input</span>
+        <span class="video-desc">Silent lip-movement video used as the visual modality input by audio-visual models.</span>
+      </div>
+    </div>
+    <div class="row"><span class="model-name m-noisy">Noisy</span><audio controls src="finals/18_S51375_SNR+6dB/1_noisy.wav"></audio></div>
+    <div class="row"><span class="model-name m-lstm">LSTMSE-Net</span><audio controls src="finals/18_S51375_SNR+6dB/2_lstmse.wav"></audio></div>
+    <div class="row"><span class="model-name m-avdiff">AVDiffuSS</span><audio controls src="finals/18_S51375_SNR+6dB/3_avdiffuss.wav"></audio></div>
+    <div class="row"><span class="model-name m-avgen">AV-Gen</span><audio controls src="finals/18_S51375_SNR+6dB/4_avgen.wav"></audio></div>
+    <div class="row row-ours"><span class="model-name m-ours">AVCrossNet (Ours)</span><audio controls src="finals/18_S51375_SNR+6dB/5_avcrossnet.wav"></audio></div>
+    <div class="row row-clean"><span class="model-name m-clean">Clean</span><audio controls src="finals/18_S51375_SNR+6dB/0_clean.wav"></audio></div>
+  </div>
+
+  <!-- ── References ── -->
+  <div class="references" id="references">
+    <div class="section-title">References</div>
+    <ol>
+      <li class="ref-ours">
+        <strong>[Ours] AVCrossNet</strong><br>
+        J. S. Sanjotra*, A. Jain*, H. Choudhary, M. Sajid, M. Gogate, N. Saleem, A. Hussain,
+        K. Dashtipour, T. Arslan, M. Tanveer, and A. Hussain,
+        &ldquo;AVCrossNet: An Audio-visual Speech Enhancement Network Using Probabilistic Fusion
+        and Cross-Modal Gated Attention,&rdquo; 2026. <em>[Under Revision]</em>
+        &mdash; <a href="https://github.com/arnavjain2710/AVCrossNet" target="_blank">GitHub</a>
+        <br><small style="color:var(--muted)">* Equal contribution</small>
+      </li>
+      <li>
+        <strong>[1] LSTMSE-Net</strong><br>
+        A. Jain, J. S. Sanjotra, H. Choudhary, K. Agrawal, R. Shah, R. Jha, M. Sajid, A. Hussain,
+        and M. Tanveer,
+        &ldquo;LSTMSE-Net: Long Short Term Speech Enhancement Network for Audio-visual Speech Enhancement,&rdquo;
+        in <em>Proc. 3rd COG-MHEAR Workshop on Audio-Visual Speech Enhancement (AVSEC)</em>,
+        pp. 33&ndash;37, 2024. doi:
+        <a href="https://doi.org/10.21437/AVSEC.2024-8" target="_blank">10.21437/AVSEC.2024-8</a>
+      </li>
+      <li>
+        <strong>[2] AVDiffuSS</strong><br>
+        J.-w. Jung et al., &ldquo;AVDiffuSS: Audio-Visual Diffusion Model for Speech Separation,&rdquo;
+        in <em>Proc. INTERSPEECH</em>, 2024.
+        &mdash; <a href="https://github.com/kaistmm/AVDiffuSS" target="_blank">GitHub</a>
+      </li>
+      <li>
+        <strong>[3] AV-Gen</strong><br>
+        N. Richter et al., &ldquo;Audio-Visual Generative Pre-Training for Speech Enhancement,&rdquo;
+        in <em>Proc. ICASSP</em>, 2024.
+        &mdash; <a href="https://github.com/sp-uhh/avgen" target="_blank">GitHub</a>
+      </li>
+    </ol>
+    <p style="margin-top: 1.2rem; font-size: 0.8rem; color: var(--muted);">
+      Note: AVDiffuSS and AV-Gen baseline citations — please verify exact author lists and venue details before publication.
+    </p>
   </div>
 
 </main>
